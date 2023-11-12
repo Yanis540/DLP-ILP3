@@ -90,36 +90,36 @@ implements IASTvisitor<Object, ILexicalEnvironment, EvaluationException> {
         Object result = Boolean.FALSE;
         IFunction fcatcher = null;
         IASTlambda catcher = iast.getCatcher();
-        if ( null != catcher ) {
+        if ( catcher  != null ) 
             fcatcher = (IFunction) catcher.accept(this, lexenv);
-        }
+        
         try {
             result = iast.getBody().accept(this, lexenv);
-        } catch (ThrownException exc) {
-            if ( null != fcatcher ) {
-                Object value = exc.getThrownValue();
-                fcatcher.apply(this, new Object[]{ value });
-            } else {
+        } 
+        catch (ThrownException exc) {
+            if ( fcatcher  == null  ) 
                 throw exc;
-            }
-        } catch (EvaluationException exc) {
-            if ( null != fcatcher ) {
-                fcatcher.apply(this, new Object[]{ exc });
-            } else {
+            Object value = exc.getThrownValue();
+            fcatcher.apply(this, new Object[]{ value });
+        } 
+        catch (EvaluationException exc) {
+            if ( fcatcher == null  ) 
                 throw exc;
-            }
-        } catch (Exception exc) {
-            if ( null != fcatcher ) {
-                EvaluationException e = new EvaluationException(exc);
-                fcatcher.apply(this, new Object[]{ e });
-            } else {
+            fcatcher.apply(this, new Object[]{ exc });
+            
+        } 
+        catch (Exception exc) {
+            if ( fcatcher  == null  ) 
                 throw exc;
-            }
-        } finally {
+            EvaluationException e = new EvaluationException(exc);
+            fcatcher.apply(this, new Object[]{ e });
+           
+        } 
+        finally {
             IASTexpression finallyer = iast.getFinallyer();
-            if ( null != finallyer ) {
+            if ( finallyer != null  ) 
                 finallyer.accept(this, lexenv);
-            }
+            
         }
         return result;
     }
