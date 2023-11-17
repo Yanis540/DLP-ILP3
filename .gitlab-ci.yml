@@ -4,33 +4,11 @@ stages:
 - cours
 - tme
 
-
-ILP1:
-  stage: cours
-  script: >
-    /home/dlp/run.sh -id ILP1 -name ILP1
-    com.paracamplus.ilp1.interpreter.test.InterpreterTest
-    com.paracamplus.ilp1.compiler.test.CompilerTest
-  artifacts:
-    reports:
-      junit: report.xml
-
-ILP2:
-  stage: cours
-  script: >
-    /home/dlp/run.sh -id ILP2 -name ILP2
-    com.paracamplus.ilp2.interpreter.test.InterpreterTest
-    com.paracamplus.ilp2.compiler.test.CompilerTest
-  artifacts:
-    reports:
-      junit: report.xml
-
-ILP3:
+TME7:
   stage: cours
   script: >
     /home/dlp/run.sh -id ILP3 -name ILP3
-    com.paracamplus.ilp3.interpreter.test.InterpreterTest
-    com.paracamplus.ilp3.compiler.test.CompilerTest
+    com.paracamplus.ilp3.ilp3tme7.test.InterpreterTest
   artifacts:
     reports:
       junit: report.xml
