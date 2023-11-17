@@ -23,22 +23,24 @@ public class CoroutineInstance extends Thread {
     }
     
     public void run() {
-        // ici dans ce code faudra appeler la fonction 
         try{
+            // bloquer le thread courant jusqu'à un appel spécifique de resume()
             resumeSemaphore.acquire();
             func.apply(interpreter, args); //<=== invoquer ça dans la méthode run 
+            // quand on a fini la fonction faudra rester sans le processus 
             this.isFinished = true; 
         }
         catch(Exception e){
             System.out.println(e.getMessage());
         }
+        //
         yieldSemaphore.release();
 
     }
 
     public void yieldCoroutine(){
         try{
-
+            // release le yield, et puis bloquer le thread jusqu'à nouvel appelle de resume 
             yieldSemaphore.release();
             resumeSemaphore.acquire();
         }
@@ -48,7 +50,9 @@ public class CoroutineInstance extends Thread {
     }
     public void resumeCoroutine(){
         try{
+            // release le thread pour lancer la fonction 
             resumeSemaphore.release();
+            // si il n'est pas fini alors bloquer le thread yield 
             if(!isFinished)
                 yieldSemaphore.acquire();
 
